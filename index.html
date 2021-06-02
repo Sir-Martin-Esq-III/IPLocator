@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <title>Frontend Mentor | IP Address Tracker</title>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+</head>
+
+<script>
+//Validate user input
+    function ValidateInput(usersInput){
+      if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(String(usersInput)  )) {  
+        return true ; 
+      }else{
+      return false;
+      }
+
+    } 
+
+//update form info
+    function updateInfo(city,country,timezone ,ipAddress,isp){ 
+      //Ip address
+      document.getElementById("ipAddress").innerHTML=ipAddress;
+      // location info
+      //Format the info strings together
+      city=city.concat("," ,country);
+      document.getElementById("Location").innerHTML=city;
+      //timezone
+      timezone="UTC".concat(timezone);
+      document.getElementById("Timezone").innerHTML=timezone;
+      //isp
+      document.getElementById("isp").innerHTML=isp;
+    }
+//Get API data/ update map
+    async function GetAPI(event){
+      var errorText
+      const usersInput=document.getElementById("inputText").value;
+      if(ValidateInput(usersInput)){
+        //API REQUEST
+        
+        let reqString= "https://geo.ipify.org/api/v1?apiKey=at_qK7R2Z6DpcbCyUGEZseZLyBvnzf2F&ipAddress=";
+        event.preventDefault();
+        const response = await fetch(reqString.concat(usersInput));
+        const {location, isp }= await response.json();
+        console.log(location);
+        let {city,country,lat,lng,timezone,} =location;
+        updateInfo(city,country,timezone,usersInput,String(isp));
+        //UpdateMap
+        map.panTo({lat: lat, lng: lng});
+        errorText= document.getElementById("errorText").hidden=true;
+      }
+      //something has gone wrong
+      else{
+        errorText= document.getElementById("errorText").hidden=false;
+        return false;
+      }
+    }
+
+    //window.onload=GetAPI(event);
+</script>
+
+<body>
+  <div class="headder">
+    <div class="content">
+      <h1>IP Address Locater</h1>
+      <form action="" onsubmit="GetAPI(event);return false;">
+        <input id="inputText" type="text" placeholder="Search for any IP address or domain">
+        <input id="button" type="submit"value="">
+
+      </form>
+      <p id="errorText" hidden="true">ERROR TEXT</p>
+    </div>
+  </div>
+
+  <div class="infomation">
+    <div class="infoContainer">
+    <ul>
+      <li>
+        <h2 class="infoHeadding">IP ADDRESS</h2>
+        <p class="infoContent" id="ipAddress"></p>
+      </li>
+      <li>
+        <h2 class="infoHeadding">LOCATION</h2>
+        <p class="infoContent" id="Location"></p>
+      </li>
+      <li>
+        <h2 class="infoHeadding">TIMEZONE</h2>
+        <p class="infoContent" id="Timezone"> </p>
+      </li>
+      <li>
+        <h2 class="infoHeadding">ISP</h2>
+        <p class="infoContent" id="isp">DOESNT WORK</p>
+      </li>
+    </ul>
+  </div>
+  </div>
+  <div id="map">
+
+   
+   
+  </div>
+
+</body>
+
+<script>
+  var map = L.map('map').setView([51.505, -0.09], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+}).addTo(map);
+
+</script>
+</html>

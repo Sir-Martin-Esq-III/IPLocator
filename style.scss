@@ -1,0 +1,164 @@
+//Fonts
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap');
+//Colors
+
+$col1:hsl(0, 0%, 17%);
+$col2:hsl(0, 0%, 59%);
+
+*{
+    font-family: 'Rubik', sans-serif;
+}
+body,h2,h1,p,ul,li {
+    padding:0;
+    margin:0;
+}
+html{
+    overflow-y: hidden;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.headder{
+    height: 30vh;
+    width: 100vw;
+    background-image: url(./images/pattern-bg.png);
+    background-size: cover;
+    place-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2em;
+    .content{
+        position: relative;
+        top: 30%;
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        height: fit-content;
+        place-items: center;
+        flex-wrap: nowrap;
+    }
+    h1{
+        font-size: clamp(1.5rem,5vw,4rem);
+        color:white;
+        font-weight: 400;
+        text-align: center;
+    }
+    form{
+        font-size: 0;
+        #inputText{
+            border-start-end-radius: 20px;
+            border-radius: 30px 0 0 30px;
+            padding-left: 1em;
+            width: 50vw;
+            max-width: 1000px;
+            border: 0;
+            height: 5vh;
+        }
+        #button{
+            width: 10vw;
+            height: 5vh;
+            background-color: black;
+            background-image: url(./images/icon-arrow.svg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            border: 0;
+            border-radius:0 30px 30px 0;
+        }
+        display: inline-block;
+    }
+
+    p{
+        color: red;
+        font-weight: 500;
+    }
+
+}
+
+.infomation{
+    z-index: 1;
+    position: absolute;
+    top:20vh;
+    background-color: white;
+    width: 90vw;
+    height: clamp(fit-content,fit-content,50vh);
+    border-radius: 30px;
+    .infoContainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: fit-content;
+
+        ul{
+            list-style-type: none;
+            width: 100%;
+            justify-content: space-evenly;
+            li{
+                display: flex;
+                flex-direction: column;
+                justify-content: center; 
+                align-items: center;
+                padding:1em;
+                text-overflow: wrap;
+
+                h2{
+                    color:$col2;
+                    font-size: 1ch;
+                }
+                p{
+                    color:$col1;
+                    font-size: 2ch;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
+
+#map{
+    z-index: 0;
+    min-height:400px;
+    width: 100vw;
+    height: 70vh;
+    img{
+        height: 70vh;
+        width: 100vw;
+    }
+}
+
+//need to do one at 700
+
+@media only screen and (min-width: 376px) {
+    .infomation {
+        max-width: 1000px;
+        top:26vh;
+    }
+    .infomation .infoContainer ul {
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 10%;
+    }
+
+    .infomation .infoContainer ul > li::after{
+        position: relative;
+        content: "";
+        border-right: 1px solid $col2;
+        height: 50px;
+        top:-40%;
+        left: 60%;
+
+    }
+
+    .headder .content{
+        width: clamp(fit-content,fit-content,1000px);
+    }
+
+  }
